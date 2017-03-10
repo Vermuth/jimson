@@ -69,7 +69,6 @@ module Jimson
         end
         arr.flatten
       end
-
     end
   end
 end

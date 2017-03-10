@@ -1,6 +1,5 @@
 module Jimson
   class Request
-
     attr_accessor :method, :params, :id
     def initialize(method, params, id = nil)
       @method = method
@@ -20,6 +19,5 @@ module Jimson
     def to_json(*a)
       MultiJson.encode(self.to_h)
     end
-
   end
 end

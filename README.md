@@ -1,6 +1,6 @@
 # Jimson
 ### JSON-RPC 2.0 Client and Server for Ruby
-[![Build Status](https://travis-ci.org/chriskite/jimson.svg?branch=master)](https://travis-ci.org/chriskite/jimson)
+[![Build Status](https://travis-ci.org/tpay-dependencies/jimson.svg?branch=master)](https://travis-ci.org/tpay-dependencies/jimson)
 
 ## Client: Quick Start
     require 'jimson'
@@ -11,7 +11,7 @@
     require 'jimson'
 
     class MyHandler
-      extend Jimson::Handler 
+      extend Jimson::Handler
 
       def sum(a,b)
         a + b

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module Jimson
   describe Router do
-
     let(:router) { Router.new }
 
     class RouterFooHandler
@@ -16,7 +15,7 @@ module Jimson
     class RouterBarHandler
       extend Jimson::Handler
 
-      def bye 
+      def bye
         'bye'
       end
     end
@@ -24,11 +23,10 @@ module Jimson
     class RouterBazHandler
       extend Jimson::Handler
 
-      def meh 
+      def meh
         'mehkayla'
       end
     end
-
 
     describe '#draw' do
       context 'when given non-nested namespaces' do
@@ -70,6 +68,5 @@ module Jimson
         router.jimson_methods.sort.should == ['hi', 'foo.bye'].sort
       end
     end
-
   end
 end

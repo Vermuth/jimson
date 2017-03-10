@@ -19,6 +19,5 @@ module Jimson
       @map.instance_eval &block
       self
     end
-
   end
 end

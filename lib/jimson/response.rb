@@ -25,6 +25,5 @@ module Jimson
       @error = data['error'] if !!data['error']
       @result = data['result'] if !!data['result']
     end
-
   end
 end
