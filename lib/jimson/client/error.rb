@@ -14,7 +14,12 @@ module Jimson
       end
 
       class ServerError < StandardError
-        def initialize(code, message)
+        attr_accessor :code, :message, :data
+
+        def initialize(code, message, data = nil)
+          @code = code
+          @message = message
+          @data = data
           super("Server error #{code}: #{message}")
         end
       end

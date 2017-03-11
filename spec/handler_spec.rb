@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module Jimson
   describe Handler do
-
     class FooHandler
       extend Jimson::Handler
 
@@ -29,34 +28,32 @@ module Jimson
 
     let(:foo) { FooHandler.new }
 
-    describe "#jimson_expose" do
-      it "exposes a method even if it was defined on Object" do
+    describe '#jimson_expose' do
+      it 'exposes a method even if it was defined on Object' do
         expect(foo.class.jimson_exposed_methods).to include('to_s')
       end
     end
 
-    describe "#jimson_exclude" do
-      context "when a method was not explicitly exposed" do
-        it "excludes the method" do
+    describe '#jimson_exclude' do
+      context 'when a method was not explicitly exposed' do
+        it 'excludes the method' do
           expect(foo.class.jimson_exposed_methods).not_to include('hi')
         end
       end
-      context "when a method was explicitly exposed" do
-        it "does not exclude the method" do
+      context 'when a method was explicitly exposed' do
+        it 'does not exclude the method' do
           expect(foo.class.jimson_exposed_methods).to include('bye')
         end
       end
     end
 
-    describe "#jimson_exposed_methods" do
+    describe '#jimson_exposed_methods' do
       it "doesn't include methods defined on Object" do
         expect(foo.class.jimson_exposed_methods).not_to include('object_id')
       end
-      it "includes methods defined on the extending class but not on Object" do
+      it 'includes methods defined on the extending class but not on Object' do
         expect(foo.class.jimson_exposed_methods).to include('so_exposed')
       end
     end
-
   end
 end
-

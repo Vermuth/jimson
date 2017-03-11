@@ -8,16 +8,17 @@ module Jimson
     end
 
     def to_h
-      h = {
+      {
         'jsonrpc' => '2.0',
         'method'  => @method
-      }
-      h.merge!('params' => @params) if !!@params && !params.empty?
-      h.merge!('id' => id)
+      }.tap do |h|
+        h['params'] = @params if !!@params && !params.empty?
+        h['id'] = id
+      end
     end
 
-    def to_json(*a)
-      MultiJson.encode(self.to_h)
+    def to_json(_options)
+      MultiJson.encode(to_h)
     end
   end
 end

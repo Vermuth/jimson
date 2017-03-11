@@ -7,23 +7,24 @@ module Jimson
     end
 
     def to_h
-      h = {'jsonrpc' => '2.0'}
-      h.merge!('result' => @result) if !!@result
-      h.merge!('error' => @error) if !!@error
-      h.merge!('id' => @id)
+      { 'jsonrpc' => '2.0' }.tap do |h|
+        h['result'] = @result if @result
+        h['error'] = @error if @error
+        h['id'] = @id
+      end
     end
 
-    def is_error?
-      !!@error
+    def failure?
+      !@error.nil?
     end
 
-    def succeeded?
-      !!@result
+    def success?
+      !@result.nil?
     end
 
     def populate!(data)
-      @error = data['error'] if !!data['error']
-      @result = data['result'] if !!data['result']
+      @error = data['error'] if data['error']
+      @result = data['result'] if data['result']
     end
   end
 end

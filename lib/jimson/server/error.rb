@@ -1,18 +1,20 @@
 module Jimson
   class Server
     class Error < StandardError
-      attr_accessor :code, :message
+      attr_accessor :code, :message, :data
 
-      def initialize(code, message)
+      def initialize(code, message, data = nil)
         @code = code
         @message = message
+        @data = data
         super(message)
       end
 
       def to_h
         {
           'code'    => @code,
-          'message' => @message
+          'message' => @message,
+          'data' => @data
         }
       end
 
@@ -48,19 +50,19 @@ module Jimson
 
       class ApplicationError < Error
         def initialize(err, show_error = false)
-          msg = "Server application error"
+          msg = 'Server application error'
           msg += ': ' + err.message + ' at ' + err.backtrace.first if show_error
           super(-32099, msg)
         end
       end
 
       CODES = {
-                -32700 => ParseError,
-                -32600 => InvalidRequest,
-                -32601 => MethodNotFound,
-                -32602 => InvalidParams,
-                -32603 => InternalError
-              }
+        -32700 => ParseError,
+        -32600 => InvalidRequest,
+        -32601 => MethodNotFound,
+        -32602 => InvalidParams,
+        -32603 => InternalError
+      }.freeze
     end
   end
 end

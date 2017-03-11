@@ -69,11 +69,13 @@ module Jimson
     # Starts the server so it can process requests
     #
     def start
-      Rack::Server.start(opts.merge(
-        :app    => self,
-        :Host   => @host,
-        :Port   => @port
-      ))
+      Rack::Server.start(
+        opts.merge(
+          app: self,
+          Host: @host,
+          Port: @port
+        )
+      )
     end
 
     #
@@ -82,7 +84,7 @@ module Jimson
     def call(env)
       req = Rack::Request.new(env)
       resp = Rack::Response.new
-      return resp.finish if !req.post?
+      return resp.finish unless req.post?
       resp.write process(req.body.read)
       resp.finish
     end

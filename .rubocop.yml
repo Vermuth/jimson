@@ -1,0 +1,20 @@
+# Use only ascii symbols in comments.
+AsciiComments:
+  Enabled: false
+
+# Missing top-level class documentation comment
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+# Separate every 3 digits in the integer portion of a number with underscores(_).
+NumericLiterals:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.3

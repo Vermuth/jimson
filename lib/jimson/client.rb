@@ -6,7 +6,7 @@ require 'jimson/response'
 
 module Jimson
   class ClientHelper
-    JSON_RPC_VERSION = '2.0'
+    JSON_RPC_VERSION = '2.0'.freeze
 
     def self.make_id
       rand(10**12)
@@ -32,25 +32,25 @@ module Jimson
 
       return process_single_response(data)
 
-      rescue Exception, StandardError => e
-        e.extend(Client::Error) unless e.is_a?(Client::Error)
-        raise e
+    rescue StandardError => e
+      e.extend(Client::Error) unless e.is_a?(Client::Error)
+      raise e
     end
 
     def send_single_request(method, args)
       namespaced_method = @namespace.nil? ? method : "#@namespace#{method}"
-      post_data = MultiJson.encode({
+      post_data = MultiJson.encode(
         'jsonrpc' => JSON_RPC_VERSION,
-        'method'  => namespaced_method,
-        'params'  => args,
-        'id'      => self.class.make_id
-      })
+        'method' => namespaced_method,
+        'params' => args,
+        'id' => self.class.make_id
+      )
       resp = RestClient.post(@url, post_data, @opts)
       if resp.nil? || resp.body.nil? || resp.body.empty?
         raise Client::Error::InvalidResponse.new
       end
 
-      return resp.body
+      resp.body
     end
 
     def send_batch_request(batch)
@@ -60,7 +60,7 @@ module Jimson
         raise Client::Error::InvalidResponse.new
       end
 
-      return resp.body
+      resp.body
     end
 
     def process_batch_response(responses)
@@ -71,33 +71,34 @@ module Jimson
       end
     end
 
-    def process_single_response(data)
-      raise Client::Error::InvalidResponse.new if !valid_response?(data)
+    def process_single_response(body)
+      raise Client::Error::InvalidResponse.new if !valid_response?(body)
 
-      if !!data['error']
-        code = data['error']['code']
-        msg = data['error']['message']
-        raise Client::Error::ServerError.new(code, msg)
+      if body['error']
+        code = body['error']['code']
+        msg = body['error']['message']
+        data = body['error']['data']
+        raise Client::Error::ServerError.new(code, msg, data)
       end
 
-      return data['result']
+      body['result']
     end
 
     def valid_response?(data)
-      return false if !data.is_a?(Hash)
+      return false unless data.is_a?(Hash)
 
       return false if data['jsonrpc'] != JSON_RPC_VERSION
 
-      return false if !data.has_key?('id')
+      return false unless data.key?('id')
 
-      return false if data.has_key?('error') && data.has_key?('result')
+      return false if data.key?('error') && data.key?('result')
 
-      if data.has_key?('error')
-        if !data['error'].is_a?(Hash) || !data['error'].has_key?('code') || !data['error'].has_key?('message')
+      if data.key?('error')
+        if !data['error'].is_a?(Hash) || !data['error'].key?('code') || !data['error'].key?('message')
           return false
         end
 
-        if !data['error']['code'].is_a?(Fixnum) || !data['error']['message'].is_a?(String)
+        if !data['error']['code'].is_a?(Integer) || !data['error']['message'].is_a?(String)
           return false
         end
       end
@@ -112,7 +113,7 @@ module Jimson
       request.id = self.class.make_id
       response = Response.new(request.id)
       @batch << [request, response]
-      return response
+      response
     end
 
     def send_batch
