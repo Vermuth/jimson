@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.has_rdoc = false
   s.extra_rdoc_files = ['README.md']
   s.add_dependency('blankslate', '~> 3.1', '>= 3.1.3')
-  s.add_dependency('rest-client', '~> 2')
+  s.add_dependency('rest-client', '>= 1.0', '< 3.0')
   s.add_dependency('multi_json', '~> 1', '>= 1.11.2')
-  s.add_dependency('rack', '~> 2')
+  s.add_dependency('rack', '>= 1.0', '< 3.0')
   s.add_development_dependency('rspec', '>= 3.4.4')
   s.add_development_dependency('rack-test')
   s.add_development_dependency('rake')
